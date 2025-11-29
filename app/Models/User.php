@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'role',
+        'department_id',
+        'shift_id',
     ];
 
     /**
@@ -45,12 +48,19 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
     public function profile()
     {
-        return $this->hasOne(Profile::class); // One User has One Profile
+        return $this->hasOne(Profile::class);
     }
+
     public function department()
     {
-        return $this->belongsTo(Department::class); // User belongs to one Department
+        return $this->belongsTo(Department::class);
+    }
+
+    public function shift()
+    {
+        return $this->belongsTo(Shift::class);
     }
 }
