@@ -24,6 +24,8 @@ class User extends Authenticatable
         'role',
         'department_id',
         'shift_id',
+        'employee_code',
+        'is_active',
     ];
 
     /**

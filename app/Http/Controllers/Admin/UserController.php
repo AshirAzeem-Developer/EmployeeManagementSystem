@@ -15,9 +15,10 @@ class UserController extends Controller
     // Saare users ki list (admin ko chor kar)
     public function index()
     {
-        // Login kiye hue admin ko list se hata dein
+        // Login kiye hue admin ko list se hata dein aur sirf active users layein
         $users = User::with(['department', 'shift'])
             ->where('id', '!=', Auth::id())
+            ->where('is_active', 1)
             ->get();
 
         return view('admin.users.index', compact('users'));
@@ -41,8 +42,17 @@ class UserController extends Controller
             'role' => ['required', Rule::in(['admin', 'employee'])],
             'department_id' => 'nullable|exists:tbl_departments,id',
             'shift_id' => 'nullable|exists:tbl_shifts,id',
-           
+            // 'employee_code' => 'nullable|string|unique:users,employee_code', // Auto-generated now
         ]);
+
+        // Generate Employee Code
+        $latestUser = User::whereNotNull('employee_code')->orderBy('id', 'desc')->first();
+        if ($latestUser && preg_match('/^emp-(\d+)$/', $latestUser->employee_code, $matches)) {
+            $nextId = intval($matches[1]) + 1;
+        } else {
+            $nextId = 1;
+        }
+        $employeeCode = 'emp-' . str_pad($nextId, 3, '0', STR_PAD_LEFT);
 
         User::create([
             'name' => $request->name,
@@ -51,11 +61,12 @@ class UserController extends Controller
             'role' => $request->role,
             'department_id' => $request->department_id,
             'shift_id' => $request->shift_id,
-            
+            'employee_code' => $employeeCode,
+            'is_active' => 1,
         ]);
 
         return redirect()->route('admin.users.index')
-            ->with('success', 'Employee created successfully.');
+            ->with('success', 'Employee created successfully. Employee Code: ' . $employeeCode);
     }
 
     // User details edit karne ka form
@@ -75,7 +86,7 @@ class UserController extends Controller
             'role' => ['required', Rule::in(['admin', 'employee'])],
             'department_id' => 'nullable|exists:tbl_departments,id',
             'shift_id' => 'nullable|exists:tbl_shifts,id',            
-            
+            'employee_code' => ['nullable', 'string', Rule::unique('users')->ignore($user->id)],
         ]);
 
         $user->update([
@@ -84,6 +95,7 @@ class UserController extends Controller
             'role' => $request->role,
             'department_id' => $request->department_id,
             'shift_id' => $request->shift_id,
+            'employee_code' => $request->employee_code,
         ]);
 
         if ($request->filled('password')) {
@@ -97,7 +109,9 @@ class UserController extends Controller
 
     public function destroy(User $user)
     {
-        $user->delete();
+        // Soft delete using is_active column
+        $user->update(['is_active' => 0]);
+        
         return redirect()->route('admin.users.index')
             ->with('success', 'Employee deleted successfully.');
     }

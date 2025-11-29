@@ -27,6 +27,12 @@
                             @error('email') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
                         </div>
 
+                        {{-- Employee Code (Auto-generated) --}}
+                        {{-- <div>
+                            <label for="employee_code" class="block text-sm font-medium text-gray-700">Employee Code</label>
+                            <input type="text" name="employee_code" id="employee_code" class="mt-1 block w-full rounded-md border-gray-300 bg-gray-100 cursor-not-allowed" placeholder="Auto-generated" disabled>
+                        </div> --}}
+
                         {{-- Password --}}
                         <div>
                             <label for="password" class="block text-sm font-medium text-gray-700">Password</label>

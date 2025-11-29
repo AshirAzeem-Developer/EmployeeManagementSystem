@@ -9,6 +9,7 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
             {{-- Check In / Check Out Card --}}
+            @if(auth()->user()->role === 'employee')
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg mb-6">
                 <div class="p-6 text-gray-900">
                     <div class="flex flex-col items-center justify-center space-y-4">
@@ -49,6 +50,7 @@
                     </div>
                 </div>
             </div>
+            @endif
 
             {{-- Attendance History --}}
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
