@@ -18,36 +18,81 @@ class DashboardController extends Controller
             return redirect()->route('admin.dashboard');
         }
 
-        // Fetch last 7 days attendance
-        $startDate = Carbon::now()->subDays(6);
-        $endDate = Carbon::now();
+        // Fetch current month attendance
+        $startDate = Carbon::now()->startOfMonth();
+        $endDate = Carbon::now()->endOfMonth();
 
         $attendances = Attendance::where('user_id', $user->id)
             ->whereBetween('date', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
-            ->orderBy('date', 'asc')
             ->get();
 
         // Prepare data for chart
-        $labels = [];
-        $data = [];
+        $dates = [];
+        $hours = [];
+        $colors = [];
+        $statuses = [];
 
-        // Fill in missing days with 0 hours
+        // Fill in all days of the month
         for ($date = $startDate->copy(); $date->lte($endDate); $date->addDay()) {
             $dateString = $date->format('Y-m-d');
-            $labels[] = $date->format('D, d M');
+            $dates[] = $date->format('d M'); // e.g., "01 Nov"
             
             $attendance = $attendances->firstWhere('date', $dateString);
             
-            if ($attendance && $attendance->check_in && $attendance->check_out) {
-                $checkIn = Carbon::parse($attendance->check_in);
-                $checkOut = Carbon::parse($attendance->check_out);
-                $hours = $checkIn->diffInMinutes($checkOut) / 60;
-                $data[] = round($hours, 2);
+            if ($attendance) {
+                // Calculate hours
+                if ($attendance->check_in && $attendance->check_out) {
+                    $checkIn = Carbon::parse($attendance->check_in);
+                    $checkOut = Carbon::parse($attendance->check_out);
+                    $workedHours = $checkIn->diffInMinutes($checkOut) / 60;
+                    $hours[] = round($workedHours, 2);
+                } else {
+                    $hours[] = 0;
+                }
+
+                // Determine color based on status
+                $status = strtolower($attendance->status);
+                $statuses[] = ucfirst($status);
+
+                switch ($status) {
+                    case 'present':
+                        $colors[] = '#3b82f6'; // Blue
+                        break;
+                    case 'late':
+                        $colors[] = '#eab308'; // Yellow
+                        break;
+                    case 'absent':
+                        $colors[] = '#ef4444'; // Red
+                        break;
+                    case 'half_day':
+                        $colors[] = '#14b8a6'; // Teal
+                        break;
+                    case 'leave':
+                        $colors[] = '#8b5cf6'; // Purple
+                        break;
+                    default:
+                        $colors[] = '#6b7280'; // Gray
+                }
             } else {
-                $data[] = 0;
+                // No record found
+                $hours[] = 0;
+                
+                if ($date->isWeekend()) {
+                    // Weekend (Sat/Sun) -> OFF
+                    $statuses[] = 'OFF';
+                    $colors[] = '#6b7280'; // Gray
+                } elseif ($date->isFuture()) {
+                    // Future Date -> Scheduled
+                    $statuses[] = 'Scheduled';
+                    $colors[] = '#e5e7eb'; // Light Gray
+                } else {
+                    // Past Weekday without attendance -> Absent
+                    $statuses[] = 'Absent';
+                    $colors[] = '#ef4444'; // Red
+                }
             }
         }
 
-        return view('dashboard', compact('labels', 'data'));
+        return view('dashboard', compact('dates', 'hours', 'colors', 'statuses'));
     }
 }
