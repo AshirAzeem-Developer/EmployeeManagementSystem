@@ -1,4 +1,4 @@
-<div class="flex flex-col w-64 bg-slate-900 text-white shadow-xl min-h-screen">
+<div class="flex flex-col w-full bg-slate-900 text-white shadow-xl h-full">
     {{-- Logo / Brand --}}
     <div class="flex items-center justify-center h-16 bg-slate-950 shadow-md">
         <span class="text-xl font-bold tracking-wider text-primary-400">EMS</span>
