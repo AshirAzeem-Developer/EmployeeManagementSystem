@@ -17,10 +17,13 @@ Route::middleware('guest')->group(function () {
 
     Route::post('register', [RegisteredUserController::class, 'store']);
 
-    Route::get('login', [AuthenticatedSessionController::class, 'create'])
-        ->name('login');
 
-    Route::post('login', [AuthenticatedSessionController::class, 'store']);
+
+    // Admin Login Routes
+    Route::get('admin/login', [App\Http\Controllers\Auth\AdminAuthenticatedSessionController::class, 'create'])
+        ->name('admin.login');
+
+    Route::post('admin/login', [App\Http\Controllers\Auth\AdminAuthenticatedSessionController::class, 'store']);
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
         ->name('password.request');
@@ -56,4 +59,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+
+    Route::post('admin/logout', [App\Http\Controllers\Auth\AdminAuthenticatedSessionController::class, 'destroy'])
+        ->name('admin.logout');
 });

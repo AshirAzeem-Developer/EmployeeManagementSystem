@@ -9,14 +9,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
 
-class AuthenticatedSessionController extends Controller
+class AdminAuthenticatedSessionController extends Controller
 {
     /**
      * Display the login view.
      */
     public function create(): View
     {
-        return view('auth.login');
+        return view('auth.admin-login');
     }
 
     /**
@@ -28,17 +28,17 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        if (Auth::user()->role !== 'employee') {
+        if (Auth::user()->role !== 'admin') {
             Auth::guard('web')->logout();
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 
             return back()->withErrors([
-                'email' => 'Access restricted to employees.',
+                'email' => 'Access restricted to administrators.',
             ]);
         }
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        return redirect()->intended(route('admin.dashboard', absolute: false));
     }
 
     /**
@@ -52,6 +52,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('admin.login');
     }
 }

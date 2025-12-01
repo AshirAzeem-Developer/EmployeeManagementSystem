@@ -3,11 +3,11 @@
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <div class="mb-6 text-center">
-        <h2 class="text-2xl font-bold text-gray-900">Employee Login</h2>
-        <p class="text-sm text-gray-600">Welcome back! Please sign in to continue.</p>
+        <h2 class="text-2xl font-bold text-gray-900">Admin Login</h2>
+        <p class="text-sm text-gray-600">Please sign in to access the admin panel</p>
     </div>
 
-    <form method="POST" action="{{ route('login') }}">
+    <form method="POST" action="{{ route('admin.login') }}">
         @csrf
 
         <!-- Email Address -->
@@ -38,8 +38,8 @@
         </div>
 
         <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('admin.login') }}">
-                {{ __('Admin Login') }}
+            <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
+                {{ __('Employee Login') }}
             </a>
 
             <x-primary-button class="ms-3">
