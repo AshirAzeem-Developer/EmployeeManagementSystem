@@ -8,6 +8,41 @@
     <div class="py-12">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             
+            {{-- Quick Actions --}}
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 mb-8">
+                {{-- Add Employee --}}
+                <a href="{{ route('admin.users.create') }}" class="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group border border-gray-100">
+                    <div class="p-3 rounded-full bg-blue-50 text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors duration-300 mb-3">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"></path></svg>
+                    </div>
+                    <span class="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors">Add Employee</span>
+                </a>
+
+                {{-- Add Department --}}
+                <a href="{{ route('admin.departments.create') }}" class="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group border border-gray-100">
+                    <div class="p-3 rounded-full bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-300 mb-3">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path></svg>
+                    </div>
+                    <span class="text-sm font-bold text-gray-700 group-hover:text-indigo-600 transition-colors">Add Department</span>
+                </a>
+
+                {{-- Add Shift --}}
+                <a href="{{ route('admin.shifts.create') }}" class="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group border border-gray-100">
+                    <div class="p-3 rounded-full bg-purple-50 text-purple-600 group-hover:bg-purple-600 group-hover:text-white transition-colors duration-300 mb-3">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                    <span class="text-sm font-bold text-gray-700 group-hover:text-purple-600 transition-colors">Add Shift</span>
+                </a>
+
+                {{-- Add Holiday --}}
+                <a href="{{ route('admin.holidays.create') }}" class="flex flex-col items-center justify-center p-6 bg-white rounded-xl shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-300 group border border-gray-100">
+                    <div class="p-3 rounded-full bg-pink-50 text-pink-600 group-hover:bg-pink-600 group-hover:text-white transition-colors duration-300 mb-3">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+                    </div>
+                    <span class="text-sm font-bold text-gray-700 group-hover:text-pink-600 transition-colors">Add Holiday</span>
+                </a>
+            </div>
+
             {{-- Stats Grid --}}
             <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
                 {{-- Total Employees --}}

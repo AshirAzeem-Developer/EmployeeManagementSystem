@@ -1,44 +1,52 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Create New Department') }}
+            {{ __('Add New Department') }}
         </h2>
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    
-                    <form action="{{ route('admin.departments.store') }}" method="POST" class="space-y-6">
-                        @csrf
+        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
+            
+            <form action="{{ route('admin.departments.store') }}" method="POST">
+                @csrf
 
+                <div class="bg-white overflow-hidden shadow-lg sm:rounded-2xl mb-8">
+                    {{-- Header --}}
+                    <div class="bg-gradient-to-r from-primary-600 to-indigo-600 px-6 py-4">
+                        <h3 class="text-lg font-bold text-white">Department Details</h3>
+                        <p class="text-primary-100 text-sm">Create a new department for the organization.</p>
+                    </div>
+
+                    <div class="p-8 space-y-6">
+                        
                         {{-- Name --}}
                         <div>
-                            <label for="name" class="block text-sm font-medium text-gray-700">Department Name</label>
-                            <input type="text" name="name" id="name" value="{{ old('name') }}" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm" required>
-                            @error('name') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                            <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Department Name</label>
+                            <input type="text" name="name" id="name" value="{{ old('name') }}" class="input-enhanced w-full rounded-lg border-gray-300 shadow-sm sm:text-sm" required placeholder="e.g. Human Resources">
+                            @error('name') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                         </div>
 
                         {{-- Description --}}
                         <div>
-                            <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                            <textarea name="description" id="description" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 sm:text-sm">{{ old('description') }}</textarea>
-                            @error('description') <span class="text-red-500 text-xs">{{ $message }}</span> @enderror
+                            <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                            <textarea name="description" id="description" rows="4" class="input-enhanced w-full rounded-lg border-gray-300 shadow-sm sm:text-sm" placeholder="Brief description of the department's function...">{{ old('description') }}</textarea>
+                            @error('description') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                         </div>
 
-                        <div class="flex justify-end">
-                            <a href="{{ route('admin.departments.index') }}" class="mr-3 inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                        {{-- Action Buttons --}}
+                        <div class="mt-8 pt-6 border-t border-gray-100 flex items-center justify-end space-x-4">
+                            <a href="{{ route('admin.departments.index') }}" class="px-5 py-2.5 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors duration-200">
                                 Cancel
                             </a>
-                            <button type="submit" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500">
+                            <button type="submit" class="px-5 py-2.5 rounded-lg bg-gradient-to-r from-primary-600 to-indigo-600 text-white font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200">
                                 Create Department
                             </button>
                         </div>
-                    </form>
-
+                    </div>
                 </div>
-            </div>
+            </form>
+
         </div>
     </div>
 </x-app-layout>

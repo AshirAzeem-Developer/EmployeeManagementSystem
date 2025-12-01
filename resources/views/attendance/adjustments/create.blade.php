@@ -6,70 +6,63 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    <form action="{{ route('attendance.adjustments.store') }}" method="POST">
-                        @csrf
+        <div class="max-w-2xl mx-auto sm:px-6 lg:px-8">
+            
+            <form action="{{ route('attendance.adjustments.store') }}" method="POST">
+                @csrf
+
+                <div class="bg-white overflow-hidden shadow-lg sm:rounded-2xl mb-8">
+                    {{-- Header --}}
+                    <div class="bg-gradient-to-r from-primary-600 to-indigo-600 px-6 py-4">
+                        <h3 class="text-lg font-bold text-white">Adjustment Request</h3>
+                        <p class="text-primary-100 text-sm">Submit a request to adjust your attendance record.</p>
+                    </div>
+
+                    <div class="p-8 space-y-6">
                         
-                        <div class="mb-4">
-                            <label for="adjustment_date" class="block text-sm font-medium text-gray-700">Date</label>
-                            <input type="date" name="adjustment_date" id="adjustment_date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500" required max="{{ date('Y-m-d') }}">
-                            @error('adjustment_date') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        {{-- Date --}}
+                        <div>
+                            <label for="attendance_date" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                            <input type="date" name="attendance_date" id="attendance_date" value="{{ old('attendance_date') }}" class="input-enhanced w-full rounded-lg border-gray-300 shadow-sm sm:text-sm" required>
+                            @error('attendance_date') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                         </div>
 
-                        <div class="mb-4">
-                            <label for="type" class="block text-sm font-medium text-gray-700">Adjustment Type</label>
-                            <select name="type" id="type" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500" required onchange="toggleTimeFields()">
-                                <option value="check_in">Missed Check-in</option>
-                                <option value="check_out">Missed Check-out</option>
-                                <option value="full_day_missing">Full Day Missing</option>
-                            </select>
-                            @error('type') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            {{-- Clock In --}}
+                            <div>
+                                <label for="clock_in" class="block text-sm font-medium text-gray-700 mb-1">Clock In Time</label>
+                                <input type="time" name="clock_in" id="clock_in" value="{{ old('clock_in') }}" class="input-enhanced w-full rounded-lg border-gray-300 shadow-sm sm:text-sm" required>
+                                @error('clock_in') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                            </div>
+
+                            {{-- Clock Out --}}
+                            <div>
+                                <label for="clock_out" class="block text-sm font-medium text-gray-700 mb-1">Clock Out Time</label>
+                                <input type="time" name="clock_out" id="clock_out" value="{{ old('clock_out') }}" class="input-enhanced w-full rounded-lg border-gray-300 shadow-sm sm:text-sm" required>
+                                @error('clock_out') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                            </div>
                         </div>
 
-                        <div class="mb-4" id="time_field">
-                            <label for="requested_time" class="block text-sm font-medium text-gray-700">Time</label>
-                            <input type="time" name="requested_time" id="requested_time" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500">
-                            @error('requested_time') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        {{-- Reason --}}
+                        <div>
+                            <label for="reason" class="block text-sm font-medium text-gray-700 mb-1">Reason for Adjustment</label>
+                            <textarea name="reason" id="reason" rows="4" class="input-enhanced w-full rounded-lg border-gray-300 shadow-sm sm:text-sm" required placeholder="Explain why you need this adjustment...">{{ old('reason') }}</textarea>
+                            @error('reason') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                         </div>
 
-                        <div class="mb-4 hidden" id="check_out_time_field">
-                            <label for="check_out_time" class="block text-sm font-medium text-gray-700">Check Out Time</label>
-                            <input type="time" name="check_out_time" id="check_out_time" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500">
-                            @error('check_out_time') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
+                        {{-- Action Buttons --}}
+                        <div class="mt-8 pt-6 border-t border-gray-100 flex items-center justify-end space-x-4">
+                            <a href="{{ route('attendance.index') }}" class="px-5 py-2.5 rounded-lg border border-gray-300 text-gray-700 font-medium hover:bg-gray-50 transition-colors duration-200">
+                                Cancel
+                            </a>
+                            <button type="submit" class="px-5 py-2.5 rounded-lg bg-gradient-to-r from-primary-600 to-indigo-600 text-white font-bold shadow-lg hover:shadow-xl hover:-translate-y-0.5 transition-all duration-200">
+                                Submit Request
+                            </button>
                         </div>
-
-                        <div class="mb-4">
-                            <label for="reason" class="block text-sm font-medium text-gray-700">Reason</label>
-                            <textarea name="reason" id="reason" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500" required></textarea>
-                            @error('reason') <span class="text-red-500 text-sm">{{ $message }}</span> @enderror
-                        </div>
-
-                        <div class="flex justify-end">
-                            <a href="{{ route('attendance.adjustments.index') }}" class="mr-4 px-4 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors">Cancel</a>
-                            <button type="submit" class="px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors">Submit Request</button>
-                        </div>
-                    </form>
+                    </div>
                 </div>
-            </div>
+            </form>
+
         </div>
     </div>
-
-    <script>
-        function toggleTimeFields() {
-            const type = document.getElementById('type').value;
-            const timeField = document.getElementById('time_field');
-            const checkOutTimeField = document.getElementById('check_out_time_field');
-            const timeLabel = document.querySelector('label[for="requested_time"]');
-
-            if (type === 'full_day_missing') {
-                timeLabel.textContent = 'Check In Time';
-                checkOutTimeField.classList.remove('hidden');
-            } else {
-                timeLabel.textContent = 'Time';
-                checkOutTimeField.classList.add('hidden');
-            }
-        }
-    </script>
 </x-app-layout>
