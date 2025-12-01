@@ -21,11 +21,11 @@
                     <div class="p-8 space-y-6">
                         
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            {{-- Name --}}
+                            {{-- Description --}}
                             <div>
-                                <label for="name" class="block text-sm font-medium text-gray-700 mb-1">Holiday Name</label>
-                                <input type="text" name="name" id="name" value="{{ old('name') }}" class="input-enhanced w-full rounded-lg border-gray-300 shadow-sm sm:text-sm" required placeholder="e.g. New Year's Day">
-                                @error('name') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                                <label for="description" class="block text-sm font-medium text-gray-700 mb-1">Holiday Name</label>
+                                <input type="text" name="description" id="description" value="{{ old('description') }}" class="input-enhanced w-full rounded-lg border-gray-300 shadow-sm sm:text-sm" required placeholder="e.g. New Year's Day">
+                                @error('description') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                             </div>
 
                             {{-- Date --}}
