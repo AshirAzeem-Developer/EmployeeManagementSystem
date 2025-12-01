@@ -29,7 +29,9 @@
                             <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-red-500 mr-1"></span> Absent</div>
                             <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-teal-500 mr-1"></span> Half Day</div>
                             <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-purple-500 mr-1"></span> Leave</div>
-                            <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-gray-500 mr-1"></span> Off/Holiday</div>
+                            <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-pink-700 mr-1"></span> Missing</div>
+                            <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-gray-500 mr-1"></span> Scheduled</div>
+                            <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-black mr-1"></span> Off/Holiday</div>
                         </div>
                     </div>
                     <div id="attendanceChart"></div>
@@ -43,6 +45,7 @@
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
+            var tooltipData = @json($tooltipData);
             var options = {
                 series: [{
                     name: 'Working Hours',
@@ -55,22 +58,16 @@
                         show: false
                     }
                 },
+                colors: @json($colors), // Pass colors array directly
                 plotOptions: {
                     bar: {
-                        colors: {
-                            ranges: [
-                                @foreach($colors as $index => $color)
-                                {
-                                    from: {{ $index }},
-                                    to: {{ $index }},
-                                    color: '{{ $color }}'
-                                },
-                                @endforeach
-                            ]
-                        },
+                        distributed: true, // Distribute colors across bars
                         columnWidth: '60%',
-                        borderRadius: 4,
+                        borderRadius: 5, // Square corners as per image
                     }
+                },
+                legend: {
+                    show: false // Hide default legend
                 },
                 dataLabels: {
                     enabled: false
@@ -81,7 +78,8 @@
                         style: {
                             colors: '#6b7280',
                             fontSize: '12px'
-                        }
+                        },
+                        rotate: -45
                     },
                     axisBorder: {
                         show: false
@@ -92,10 +90,7 @@
                 },
                 yaxis: {
                     title: {
-                        text: 'Hours',
-                        style: {
-                            color: '#6b7280'
-                        }
+                        text: '', // Removed title as per image
                     },
                     labels: {
                         style: {
@@ -113,19 +108,17 @@
                     }
                 },
                 tooltip: {
-                    y: {
-                        formatter: function (val) {
-                            return val + " hours"
-                        }
-                    },
                     custom: function({series, seriesIndex, dataPointIndex, w}) {
-                        var status = @json($statuses)[dataPointIndex];
-                        var hours = series[seriesIndex][dataPointIndex];
-                        var color = w.config.plotOptions.bar.colors.ranges[dataPointIndex].color;
+                        var data = tooltipData[dataPointIndex];
                         
-                        return '<div class="px-3 py-2 text-sm font-medium text-white rounded shadow-lg" style="background-color:' + color + '">' +
-                            '<span>' + status + '</span>' +
-                            (hours > 0 ? '<div class="text-xs opacity-90 mt-1">Hours: ' + hours + '</div>' : '') +
+                        return '<div class="px-3 py-2 text-sm text-gray-700 bg-white rounded shadow-lg border border-gray-200">' +
+                            '<div class="font-bold text-blue-600 mb-1">' + data.fullDate + '</div>' +
+                            '<div>TimeIn : ' + data.timeIn + '</div>' +
+                            '<div>TimeOut : ' + data.timeOut + '</div>' +
+                            '<div>BreakHrs : ' + data.breakHrs + '</div>' +
+                            '<div>RemoteHrs : ' + data.remoteHrs + '</div>' +
+                            '<div>TotalWorkedHrs : ' + data.totalWorkedHrs + '</div>' +
+                            '<div class="mt-1">' + data.status + '</div>' +
                             '</div>';
                     }
                 }
