@@ -3,9 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\Loggable;
 
 class Attendance extends Model
 {
+    use Loggable;
     protected $table = 'tbl_attendances';
 
     protected $fillable = [

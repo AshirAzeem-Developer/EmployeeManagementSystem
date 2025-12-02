@@ -22,24 +22,35 @@
                         
                         {{-- Date --}}
                         <div>
-                            <label for="attendance_date" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
-                            <input type="date" name="attendance_date" id="attendance_date" value="{{ old('attendance_date') }}" class="input-enhanced w-full rounded-lg border-gray-300 shadow-sm sm:text-sm" required>
-                            @error('attendance_date') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                            <label for="adjustment_date" class="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                            <input type="date" name="adjustment_date" id="adjustment_date" value="{{ old('adjustment_date') }}" class="input-enhanced w-full rounded-lg border-gray-300 shadow-sm sm:text-sm" required>
+                            @error('adjustment_date') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                        </div>
+
+                        {{-- Type --}}
+                        <div>
+                            <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Adjustment Type</label>
+                            <select name="type" id="type" class="input-enhanced w-full rounded-lg border-gray-300 shadow-sm sm:text-sm" required onchange="toggleFields()">
+                                <option value="check_in" {{ old('type') == 'check_in' ? 'selected' : '' }}>Check In Adjustment</option>
+                                <option value="check_out" {{ old('type') == 'check_out' ? 'selected' : '' }}>Check Out Adjustment</option>
+                                <option value="full_day_missing" {{ old('type') == 'full_day_missing' ? 'selected' : '' }}>Full Day Missing</option>
+                            </select>
+                            @error('type') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                         </div>
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                            {{-- Clock In --}}
-                            <div>
-                                <label for="clock_in" class="block text-sm font-medium text-gray-700 mb-1">Clock In Time</label>
-                                <input type="time" name="clock_in" id="clock_in" value="{{ old('clock_in') }}" class="input-enhanced w-full rounded-lg border-gray-300 shadow-sm sm:text-sm" required>
-                                @error('clock_in') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                            {{-- Requested Time (Dynamic Label) --}}
+                            <div id="requested_time_container">
+                                <label for="requested_time" id="requested_time_label" class="block text-sm font-medium text-gray-700 mb-1">Check In Time</label>
+                                <input type="time" name="requested_time" id="requested_time" value="{{ old('requested_time') }}" class="input-enhanced w-full rounded-lg border-gray-300 shadow-sm sm:text-sm" required>
+                                @error('requested_time') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                             </div>
 
-                            {{-- Clock Out --}}
-                            <div>
-                                <label for="clock_out" class="block text-sm font-medium text-gray-700 mb-1">Clock Out Time</label>
-                                <input type="time" name="clock_out" id="clock_out" value="{{ old('clock_out') }}" class="input-enhanced w-full rounded-lg border-gray-300 shadow-sm sm:text-sm" required>
-                                @error('clock_out') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
+                            {{-- Check Out Time (Only for Full Day) --}}
+                            <div id="check_out_time_container" class="hidden">
+                                <label for="check_out_time" class="block text-sm font-medium text-gray-700 mb-1">Check Out Time</label>
+                                <input type="time" name="check_out_time" id="check_out_time" value="{{ old('check_out_time') }}" class="input-enhanced w-full rounded-lg border-gray-300 shadow-sm sm:text-sm">
+                                @error('check_out_time') <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span> @enderror
                             </div>
                         </div>
 
@@ -62,6 +73,32 @@
                     </div>
                 </div>
             </form>
+
+            <script>
+                function toggleFields() {
+                    const type = document.getElementById('type').value;
+                    const requestedTimeLabel = document.getElementById('requested_time_label');
+                    const checkOutContainer = document.getElementById('check_out_time_container');
+                    const checkOutInput = document.getElementById('check_out_time');
+
+                    if (type === 'check_in') {
+                        requestedTimeLabel.innerText = 'Check In Time';
+                        checkOutContainer.classList.add('hidden');
+                        checkOutInput.required = false;
+                    } else if (type === 'check_out') {
+                        requestedTimeLabel.innerText = 'Check Out Time';
+                        checkOutContainer.classList.add('hidden');
+                        checkOutInput.required = false;
+                    } else if (type === 'full_day_missing') {
+                        requestedTimeLabel.innerText = 'Check In Time';
+                        checkOutContainer.classList.remove('hidden');
+                        checkOutInput.required = true;
+                    }
+                }
+
+                // Run on load to set correct state (e.g. if validation failed and old input exists)
+                document.addEventListener('DOMContentLoaded', toggleFields);
+            </script>
 
         </div>
     </div>
