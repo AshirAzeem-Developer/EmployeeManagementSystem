@@ -18,7 +18,7 @@ class UserController extends Controller
         // Login kiye hue admin ko list se hata dein aur sirf active users layein
         $users = User::with(['department', 'shift'])
             ->where('id', '!=', Auth::id())
-            ->where('is_active', 1)
+            // ->where('is_active', 1)
             ->get();
 
         return view('admin.users.index', compact('users'));
@@ -85,7 +85,7 @@ class UserController extends Controller
             'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
             'role' => ['required', Rule::in(['admin', 'employee'])],
             'department_id' => 'nullable|exists:tbl_departments,id',
-            'shift_id' => 'nullable|exists:tbl_shifts,id',            
+            'shift_id' => 'nullable|exists:tbl_shifts,id',
             'employee_code' => ['nullable', 'string', Rule::unique('users')->ignore($user->id)],
         ]);
 
@@ -111,7 +111,7 @@ class UserController extends Controller
     {
         // Soft delete using is_active column
         $user->update(['is_active' => 0]);
-        
+
         return redirect()->route('admin.users.index')
             ->with('success', 'Employee deleted successfully.');
     }
