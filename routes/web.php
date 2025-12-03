@@ -30,6 +30,9 @@ Route::middleware('auth')->group(function () {
     
     // Employee Adjustment Routes
     Route::resource('attendance/adjustments', \App\Http\Controllers\AttendanceAdjustmentController::class)->names('attendance.adjustments');
+
+    // Global Scanner Route (Accessible to all authenticated users)
+    Route::post('attendance/scan-qr', [\App\Http\Controllers\Admin\AttendanceController::class, 'markByQr'])->name('attendance.markByQr');
 });
 
 // --- ADMIN PANEL ROUTES ---
@@ -40,7 +43,7 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::resource('users', UserController::class);
     // Attendance Report
     Route::get('attendance/scan', [\App\Http\Controllers\Admin\AttendanceController::class, 'scan'])->name('attendance.scan');
-    Route::post('attendance/scan', [\App\Http\Controllers\Admin\AttendanceController::class, 'markByQr'])->name('attendance.markByQr');
+    // Route::post('attendance/scan', [\App\Http\Controllers\Admin\AttendanceController::class, 'markByQr'])->name('attendance.markByQr'); // Moved to global auth
     Route::resource('attendance', \App\Http\Controllers\Admin\AttendanceController::class)->only(['index']);
     
     // Manual Attendance

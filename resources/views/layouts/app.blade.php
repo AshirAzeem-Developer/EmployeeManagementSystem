@@ -133,26 +133,44 @@
         function handleGlobalScan(code) {
             showGlobalToast('processing', 'Processing Scan...', 'Scanning...');
 
-            fetch('{{ route("admin.attendance.markByQr") }}', {
+            fetch('{{ route("attendance.markByQr") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json' // Ensure we get JSON back
                 },
                 body: JSON.stringify({ employee_code: code })
             })
-            .then(response => response.json())
+            .then(async response => {
+                const isJson = response.headers.get('content-type')?.includes('application/json');
+                
+                if (!isJson) {
+                    // If not JSON, it's likely an HTML error page or redirect (e.g., session expired)
+                    const text = await response.text();
+                    console.error('Non-JSON Response:', text);
+                    throw new Error('Received invalid response from server (likely HTML). Check console.');
+                }
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    const errorMsg = (data && data.message) || response.statusText;
+                    throw new Error(errorMsg);
+                }
+                return data;
+            })
             .then(data => {
-                if (data.status === 'success') {
+                if (data && data.status === 'success') {
                     const title = data.type === 'checkin' ? 'Checked In' : 'Checked Out';
                     showGlobalToast('success', title, `${data.user} at ${data.time}`);
-                    // Optional: Play sound
                 } else {
-                    showGlobalToast('error', 'Error', data.message);
+                    showGlobalToast('error', 'Error', (data && data.message) || 'Unknown Error');
                 }
             })
             .catch(error => {
-                showGlobalToast('error', 'System Error', 'Could not process scan.');
+                console.error('Scan Error:', error);
+                showGlobalToast('error', 'System Error', error.message || 'Could not process scan.');
             });
         }
 
