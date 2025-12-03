@@ -19,7 +19,7 @@ class ScanController extends Controller
             ]);
 
             $user = User::where('employee_code', $request->employee_code)->first();
-            
+
             if (!$user) {
                 return response()->json(['status' => 'error', 'message' => 'Employee not found.'], 404);
             }
@@ -35,13 +35,30 @@ class ScanController extends Controller
             if ($attendance) {
                 // Already checked in, so check out
                 if ($attendance->check_out) {
-                     return response()->json([
+                    return response()->json([
                         'status' => 'error',
                         'message' => 'Already checked out for today.',
                         'user' => $user->name,
                         'time' => $now->format('H:i:s')
                     ]);
                 }
+
+                // Cooldown Check: Prevent check-out if check-in was less than 10 minutes ago
+                $checkInTime = Carbon::parse($attendance->check_in);
+                $diffMinutes = $now->diffInMinutes($checkInTime, true);
+
+                if ($diffMinutes < 5) {
+                    $remainingMinutes = ceil(5 - $diffMinutes); // 🔥 No decimals
+
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => "Cooldown active. Please wait {$remainingMinutes} minutes before checking out.",
+                        'user' => $user->name,
+                        'time' => $remainingMinutes . " minutes"
+                    ]);
+                }
+
+
 
                 $attendance->update([
                     'check_out' => $now->format('H:i:s'),
@@ -74,7 +91,7 @@ class ScanController extends Controller
                 ]);
             }
         } catch (\Illuminate\Validation\ValidationException $e) {
-             return response()->json([
+            return response()->json([
                 'status' => 'error',
                 'message' => 'Invalid Employee Code',
                 'errors' => $e->errors()
