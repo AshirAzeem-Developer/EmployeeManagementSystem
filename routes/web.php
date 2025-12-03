@@ -39,6 +39,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/dashboard', [App\Http\Controllers\Admin\DashboardController::class, 'index'])->name('dashboard');
     Route::resource('users', UserController::class);
     // Attendance Report
+    Route::get('attendance/scan', [\App\Http\Controllers\Admin\AttendanceController::class, 'scan'])->name('attendance.scan');
+    Route::post('attendance/scan', [\App\Http\Controllers\Admin\AttendanceController::class, 'markByQr'])->name('attendance.markByQr');
     Route::resource('attendance', \App\Http\Controllers\Admin\AttendanceController::class)->only(['index']);
     
     // Manual Attendance
