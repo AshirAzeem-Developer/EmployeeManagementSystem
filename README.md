@@ -57,8 +57,8 @@
 |:---:|:---:|
 | ![Admin Dashboard](public/screenshots/AdminDashboard.png) | ![Employee List](public/screenshots/EmployeeList.png) |
 
-| QR Scanner | Employee Card |
-|:---:|:---:|
+| Employee Card |
+|:---:|
 | ![Employee Card](public/screenshots/EmployeeCard.png) |
 
 ---
