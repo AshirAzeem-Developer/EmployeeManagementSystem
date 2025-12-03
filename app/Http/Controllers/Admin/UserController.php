@@ -16,7 +16,7 @@ class UserController extends Controller
     public function index()
     {
         // Login kiye hue admin ko list se hata dein aur sirf active users layein
-        $users = User::with(['department', 'shift'])
+        $users = User::with(['department', 'shift', 'profile'])
             ->where('id', '!=', Auth::id())
             // ->where('is_active', 1)
             ->get();

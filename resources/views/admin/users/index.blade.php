@@ -79,54 +79,52 @@
             <div class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full">
                 
                 <!-- ID Card Design -->
-                <div class="relative bg-gradient-to-br from-blue-900 to-indigo-900 text-white p-6 overflow-hidden h-[500px] flex flex-col items-center justify-between">
+                <div class="relative bg-white text-gray-800 overflow-hidden h-[500px] flex flex-col items-center shadow-2xl rounded-xl">
                     
-                    <!-- Background Shapes -->
-                    <div class="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-                        <div class="absolute top-[-50px] left-[-50px] w-32 h-32 bg-blue-500 rounded-full mix-blend-overlay filter blur-xl opacity-50"></div>
-                        <div class="absolute bottom-[-50px] right-[-50px] w-40 h-40 bg-purple-500 rounded-full mix-blend-overlay filter blur-xl opacity-50"></div>
-                        <div class="absolute top-1/2 right-0 w-24 h-24 bg-indigo-500 rounded-full mix-blend-overlay filter blur-xl opacity-30"></div>
+                    <!-- Blue Curved Header -->
+                    <div class="absolute top-0 left-0 w-full h-48 bg-blue-600 z-0" style="clip-path: ellipse(150% 100% at 50% 0%);"></div>
+                    
+                    <!-- Company Name -->
+                    <div class="relative z-10 w-full flex justify-center items-start px-6 pt-6">
+                        <h3 class="text-white font-bold text-lg tracking-wide drop-shadow-md text-center">Information Technology<br>Services</h3>
                     </div>
 
-                    <div class="relative z-10 w-full flex flex-col items-center h-full">
-                        <!-- Header -->
-                        <div class="text-center mb-4">
-                            <h3 class="text-xs font-bold tracking-widest uppercase opacity-80">ID CARD TEMPLATE</h3>
-                        </div>
-
-                        <!-- QR Code Section (Replaces Avatar) -->
-                        <div class="bg-white p-2 rounded-lg shadow-lg mb-4 w-48 h-48 flex items-center justify-center">
-                            <img id="modalQrCode" src="" alt="QR Code" class="w-full h-full object-contain">
-                        </div>
-
-                        <!-- Employee Details -->
-                        <div class="text-center w-full">
-                            <h2 id="modalName" class="text-2xl font-bold uppercase tracking-wide mb-1">Name Surname</h2>
-                            <p id="modalRole" class="text-pink-500 font-bold tracking-widest uppercase text-sm mb-4">Position</p>
-                            
-                            <div class="space-y-1 text-xs opacity-90">
-                                <p>ID: <span id="modalCode" class="font-mono">123 456 789</span></p>
-                                <p>DEPT: <span id="modalDept">Department</span></p>
+                    <!-- QR Code Square (Replaces Photo) -->
+                    <div class="relative z-10 mt-8 mb-4">
+                        <div class="w-40 h-40 bg-white p-2 shadow-xl flex items-center justify-center border-4 border-orange-500 rounded-lg">
+                            <div class="w-full h-full flex items-center justify-center bg-white">
+                                <img id="modalQrCode" src="" alt="QR Code" class="w-36 h-36 object-contain">
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Barcode / Footer -->
-                        <div class="mt-auto w-full text-center">
-                            <!-- Fake Barcode Visual -->
-                            <div class="h-8 w-2/3 mx-auto bg-white mb-2 flex items-center justify-center overflow-hidden">
-                                <div class="w-full h-full flex justify-between px-1">
-                                    @for($i=0; $i<30; $i++)
-                                        <div class="w-[2px] h-full bg-black"></div>
-                                        <div class="w-[1px] h-full bg-transparent"></div>
-                                    @endfor
-                                </div>
+                    <!-- Employee Details -->
+                    <div class="relative z-10 w-full flex flex-col items-center px-6 mt-2">
+                        <h2 id="modalName" class="text-2xl font-bold text-gray-900 uppercase tracking-wide border-b-2 border-blue-600 pb-1 mb-4">Name Surname</h2>
+                        
+                        <div class="w-full space-y-3 text-sm font-medium text-gray-700 px-4">
+                            <div class="flex">
+                                <span class="w-24 font-bold text-gray-900">ID No</span>
+                                <span class="mr-2">:</span>
+                                <span id="modalCode">20256</span>
                             </div>
-                            <div class="flex items-center justify-center gap-2 text-xs font-bold">
-                                <div class="w-6 h-6 border-2 border-white rounded-full flex items-center justify-center">
-                                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
-                                </div>
-                                <span>YOUR LOGO</span>
+                            <div class="flex">
+                                <span class="w-24 font-bold text-gray-900">Role</span>
+                                <span class="mr-2">:</span>
+                                <span id="modalRole">Employee</span>
                             </div>
+                            <div class="flex">
+                                <span class="w-24 font-bold text-gray-900">E-mail</span>
+                                <span class="mr-2">:</span>
+                                <span id="modalEmail" class="truncate">email@example.com</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Message -->
+                    <div class="mt-auto mb-6 px-6 text-center w-full">
+                        <div class="bg-blue-600 text-white text-[10px] py-2 px-4 rounded-lg shadow-md">
+                            <p>If found, please return to Information Technology Services.</p>
                         </div>
                     </div>
                 </div>
@@ -147,9 +145,9 @@
     <script>
         function openCardModal(user) {
             document.getElementById('modalName').textContent = user.name;
-            document.getElementById('modalRole').textContent = user.role; // Or user.designation if available
+            document.getElementById('modalRole').textContent = user.role.charAt(0).toUpperCase() + user.role.slice(1);
             document.getElementById('modalCode').textContent = user.employee_code || 'N/A';
-            document.getElementById('modalDept').textContent = user.department ? user.department.name : 'N/A';
+            document.getElementById('modalEmail').textContent = user.email;
             
             // Generate QR Code URL
             // Using api.qrserver.com for simplicity. 
@@ -166,17 +164,30 @@
         }
 
         function printCard() {
-            // Simple print logic - could be improved to print only the card area
             const printContent = document.querySelector('#cardModal .relative').outerHTML;
             const win = window.open('', '', 'height=700,width=500');
             win.document.write('<html><head><title>Print ID Card</title>');
-            // Include Tailwind CDN for styling in print window or copy styles
-            win.document.write('<script src="https://cdn.tailwindcss.com"><\/script>'); 
+            win.document.write('<script src="https://cdn.tailwindcss.com"><\/script>');
+            win.document.write('<style>');
+            win.document.write(`
+                @media print {
+                    body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                    .bg-gradient-to-br { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+                }
+            `);
+            win.document.write('</style>');
             win.document.write('</head><body class="flex items-center justify-center min-h-screen">');
             win.document.write(printContent);
             win.document.write('</body></html>');
             win.document.close();
-            win.print();
+
+            // Wait for Tailwind to load and apply styles
+            win.onload = function() {
+                setTimeout(function() {
+                    win.print();
+                    win.close();
+                }, 1000); // 1 second delay to ensure styles are applied
+            };
         }
     </script>
 </x-app-layout>
