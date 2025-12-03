@@ -32,7 +32,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('attendance/adjustments', \App\Http\Controllers\AttendanceAdjustmentController::class)->names('attendance.adjustments');
 
     // Global Scanner Route (Accessible to all authenticated users)
-    Route::post('attendance/scan-qr', [\App\Http\Controllers\Admin\AttendanceController::class, 'markByQr'])->name('attendance.markByQr');
+    Route::post('/scan-qr', [\App\Http\Controllers\ScanController::class, 'markByQr'])->name('scan.qr');
 });
 
 // --- ADMIN PANEL ROUTES ---

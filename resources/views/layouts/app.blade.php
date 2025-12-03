@@ -133,7 +133,7 @@
         function handleGlobalScan(code) {
             showGlobalToast('processing', 'Processing Scan...', 'Scanning...');
 
-            fetch('{{ route("attendance.markByQr") }}', {
+            fetch('{{ route("scan.qr") }}', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
