@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-guest-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             {{ __('Attendance Scanner') }}
@@ -76,7 +76,7 @@
                 loading.classList.remove('hidden');
                 statusArea.classList.add('hidden');
 
-                fetch('{{ route("admin.attendance.markByQr") }}', {
+                fetch('{{ route("scan.qr") }}', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -128,4 +128,4 @@
             }
         });
     </script>
-</x-app-layout>
+</x-guest-layout>

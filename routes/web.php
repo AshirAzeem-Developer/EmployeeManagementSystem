@@ -13,6 +13,10 @@ Route::get('/', [App\Http\Controllers\Auth\AuthenticatedSessionController::class
 
 Route::post('/', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'store'])
     ->middleware('guest');
+ 
+ Route::get('attendance/scan', [\App\Http\Controllers\Admin\AttendanceController::class, 'scan'])->name('attendance.scan');
+
+
 
 Route::get('/dashboard', [App\Http\Controllers\Employee\DashboardController::class, 'index'])
     ->middleware(['auth', 'verified'])
@@ -32,8 +36,11 @@ Route::middleware('auth')->group(function () {
     Route::resource('attendance/adjustments', \App\Http\Controllers\AttendanceAdjustmentController::class)->names('attendance.adjustments');
 
     // Global Scanner Route (Accessible to all authenticated users)
-    Route::post('/scan-qr', [\App\Http\Controllers\ScanController::class, 'markByQr'])->name('scan.qr');
+    // Route::post('/scan-qr', [\App\Http\Controllers\ScanController::class, 'markByQr'])->name('scan.qr'); // Moved outside auth
 });
+
+// Public Scanner Route
+Route::post('/scan-qr', [\App\Http\Controllers\ScanController::class, 'markByQr'])->name('scan.qr');
 
 // --- ADMIN PANEL ROUTES ---
 // 'admin' middleware lagaya takay sirf admin user hi access kar sakein
