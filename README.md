@@ -1,6 +1,6 @@
 # 🏢 Employee Management System (EMS)
 
-![EMS Banner](https://via.placeholder.com/1200x400?text=Employee+Management+System)
+![EMS Banner](public/screenshots/Banner.png)
 
 <p align="center">
     <a href="https://laravel.com"><img src="https://img.shields.io/badge/Laravel-11.x-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" alt="Laravel"></a>
