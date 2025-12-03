@@ -55,11 +55,11 @@
 
 | Admin Dashboard | Employee List |
 |:---:|:---:|
-| ![Admin Dashboard](https://via.placeholder.com/600x300?text=Admin+Dashboard) | ![Employee List](https://via.placeholder.com/600x300?text=Employee+List) |
+| ![Admin Dashboard](public/screenshots/AdminDashboard.png) | ![Employee List](public/screenshots/EmployeeList.png) |
 
 | QR Scanner | Employee Card |
 |:---:|:---:|
-| ![QR Scanner](https://via.placeholder.com/600x300?text=QR+Scanner) | ![Employee Card](https://via.placeholder.com/600x300?text=Employee+Card) |
+| ![Employee Card](public/screenshots/EmployeeCard.png) |
 
 ---
 
